@@ -35,7 +35,7 @@ pub(crate) struct ConfigurationOperation {
     pub(crate) list: bool,
     /// set configuration option
     #[structopt(subcommand)]
-    command: Option<ConfigurationOption>
+    pub(crate) command: Option<ConfigurationOption>
 }
 
 /// Args of configuration
