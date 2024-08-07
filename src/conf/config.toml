@@ -1,0 +1,7 @@
+[app_info]
+app_id = "20240707002094051"
+app_secret = "GyyaMSEJaavanYgVc7rO"
+
+[default]
+from = "en"
+to = "zh"
