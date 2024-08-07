@@ -17,6 +17,7 @@ fn main() {
     
     let result: String = match args.command {
         Command::Run(args) => translate(&args.from, &args.to, &args.target, &config.app_info.app_id, &config.app_info.app_secret, &config.default.from, &config.default.to),
+        Command::Config(configuration) => {config.to_str()},
     };
     
     println!("{}", result);

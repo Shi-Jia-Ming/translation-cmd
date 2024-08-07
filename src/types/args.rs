@@ -10,6 +10,8 @@ pub(crate) struct Arg {
 pub(crate) enum Command {
     /// execute translation command
     Run(TransArgs),
+    /// configuration manage
+    Config(ConfigurationOperation),
 }
 
 /// Args of translation
@@ -23,4 +25,31 @@ pub(crate) struct TransArgs {
     pub(crate) to:  String,
     /// the word to translate
     pub(crate) target: String
+}
+
+
+#[derive(Debug, StructOpt)]
+pub(crate) struct ConfigurationOperation {
+    /// list the configuration options
+    #[structopt(short, long, conflicts_with= "command")]
+    pub(crate) list: bool,
+    /// set configuration option
+    #[structopt(subcommand)]
+    command: Option<ConfigurationOption>
+}
+
+/// Args of configuration
+#[derive(Debug, StructOpt)]
+pub(crate) enum ConfigurationOption {
+    /// set configuration options
+    Set(ConfigurationArgs),
+}
+
+
+#[derive(Debug, StructOpt)]
+pub(crate) struct ConfigurationArgs {
+    /// key of the configuration
+    pub(crate) key: String,
+    /// value of the configuration
+    pub(crate) value: String,
 }
