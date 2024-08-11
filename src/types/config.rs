@@ -9,8 +9,10 @@ pub(crate) struct Configuration {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct AppInfo {
+    pub(crate) api_version: String,
     pub(crate) app_id: String,
     pub(crate) app_secret: String,
+    pub(crate) token: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -19,18 +21,27 @@ pub(crate) struct Default {
     pub(crate) to: String,
 }
 
+pub(crate) enum ApiVersion {
+    BAIDU,
+    MOMO,
+    ILLEGAL
+}
+
 impl Configuration {
     pub(crate) fn to_str(self) -> String {
-        let mut result: String = String::new();
-        result += "Configuration list(use variable name):\n";
-        result += &*self.app_info.to_str();
-        result += &*self.default.to_str();
-
-        result.clone()
+        format!("Configuration list(use variable name):\n{}{}", self.app_info.to_str(), self.default.to_str())
     }
 
     pub(crate) fn load_app_info(&self) -> (String, String) {
         (self.app_info.app_id.clone(), self.app_info.app_secret.clone())
+    }
+
+    pub(crate) fn get_api_version(&self) -> ApiVersion {
+        match self.app_info.api_version.as_str() {
+            "baidu" => ApiVersion::BAIDU,
+            "momo" => ApiVersion::MOMO,
+            _ => ApiVersion::ILLEGAL,
+        }
     }
 
     pub(crate) fn load_default_option(&self) -> (String, String) {
@@ -40,22 +51,13 @@ impl Configuration {
 
 impl AppInfo {
     fn to_str(self) -> String {
-        let mut result: String = String::new();
-        result += "\n[app_info]\n";
-        result += &*format!("  - app_id: {}\n", self.app_id).to_string();
-        result += &*format!("  - app_secret: {}\n\n", self.app_secret).to_string();
-
-        result.clone()
+        format!("\napp_info\n  - api_version: {}\n  - app_id: {}\n  - app_secret: {}\n  - token: {}\n",
+                self.api_version, self.app_id, self.app_secret, self.token)
     }
 }
 
 impl Default {
     fn to_str(self) -> String {
-        let mut result: String = String::new();
-        result += "\n[app_info]\n";
-        result += &*format!("  - from: {}\n", self.from).to_string();
-        result += &*format!("  - to: {}\n", self.to).to_string();
-
-        result.clone()
+        format!("\ndefault\n  - from: {}\n  - to: {}\n", self.from, self.to)
     }
 }

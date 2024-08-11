@@ -40,17 +40,21 @@ impl ConfigHandler {
         match args.command {
             None => {}
             Some(ConfigurationOption::Set(args)) => {
-                changed_field = args.key.clone();
+                changed_field = args.field.clone();
                 new_value = args.value.clone();
-                match args.key.as_str() {
+                match args.field.as_str() {
                     "from" => {
                         previous_value = config.default.from;
                         config.default.from = args.value.into();
-                    }
+                    },
                     "to" => {
                         previous_value = config.default.to;
                         config.default.to = args.value.into();
-                    }
+                    },
+                    "api_version" => {
+                        previous_value = config.app_info.api_version;
+                        config.app_info.api_version = args.value.into();
+                    },
                     _ => {
                         // TODO 报错
                     }

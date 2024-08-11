@@ -6,6 +6,7 @@ use urlencoding::encode;
 
 use crate::service::config::ConfigHandler;
 use crate::types::args::TransArgs;
+use crate::types::config::ApiVersion;
 
 #[derive(Debug, Deserialize, Serialize)]
 struct TransResult {
@@ -24,7 +25,7 @@ pub(super) struct TranslateHandler;
 
 impl TranslateHandler {
     /// generate the url for common translate service.
-    fn generate_common_translate_url(from: &str, to: &str, target: &str, app_id: &str, app_secret: &str) -> String {
+    fn generate_common_translate_url_baidu(from: &str, to: &str, target: &str, app_id: &str, app_secret: &str) -> String {
         let salt: String = rand::thread_rng().gen_range(1..=100).to_string();
 
         // generate sign code
@@ -38,7 +39,7 @@ impl TranslateHandler {
     }
 
     /// call the translation service.
-    pub fn common_translate(url: &str) -> String {
+    pub fn common_translate_baidu(url: &str) -> String {
         let client: Client = Client::new();
 
         let res: String = client.get(url)
@@ -55,13 +56,19 @@ pub(crate) fn translate(args: TransArgs) -> String {
     // load configuration
     let (config, _) = ConfigHandler::load_config();
 
-    let (default_from, default_to) = config.load_default_option();
-    let (app_id, app_secret) = config.load_app_info();
+    match config.get_api_version() {
+        ApiVersion::BAIDU => {
+            let (default_from, default_to) = config.load_default_option();
+            let (app_id, app_secret) = config.load_app_info();
 
-    let from = if args.from == "default" { default_from } else { args.from };
-    let to = if args.to == "default" { default_to } else { args.to };
+            let from = if args.from == "default" { default_from } else { args.from };
+            let to = if args.to == "default" { default_to } else { args.to };
 
-    let url: String = TranslateHandler::generate_common_translate_url(&from, &to, &args.target, &app_id, &app_secret);
+            let url: String = TranslateHandler::generate_common_translate_url_baidu(&from, &to, &args.target, &app_id, &app_secret);
 
-    TranslateHandler::common_translate(&url)
+            TranslateHandler::common_translate_baidu(&url)
+        },
+        ApiVersion::MOMO => { "Under development".parse().unwrap() },
+        ApiVersion::ILLEGAL => { "Under development".parse().unwrap() },
+    }
 }

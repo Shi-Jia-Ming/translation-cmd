@@ -49,7 +49,8 @@ pub(crate) enum ConfigurationOption {
 #[derive(Debug, StructOpt)]
 pub(crate) struct ConfigurationArgs {
     /// key of the configuration
-    pub(crate) key: String,
+    #[structopt(long, short)]
+    pub(crate) field: String,
     /// value of the configuration
     pub(crate) value: String,
 }
