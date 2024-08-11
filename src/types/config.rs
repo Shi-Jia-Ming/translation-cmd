@@ -28,6 +28,14 @@ impl Configuration {
 
         result.clone()
     }
+
+    pub(crate) fn load_app_info(&self) -> (String, String) {
+        (self.app_info.app_id.clone(), self.app_info.app_secret.clone())
+    }
+
+    pub(crate) fn load_default_option(&self) -> (String, String) {
+        (self.default.from.clone(), self.default.to.clone())
+    }
 }
 
 impl AppInfo {
