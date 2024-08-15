@@ -12,7 +12,8 @@ pub(crate) struct AppInfo {
     pub(crate) api_version: String,
     pub(crate) app_id: String,
     pub(crate) app_secret: String,
-    pub(crate) token: String,
+    pub(crate) momo_token: String,
+    pub(crate) deeplx_token: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -24,6 +25,7 @@ pub(crate) struct Default {
 pub(crate) enum ApiVersion {
     BAIDU,
     MOMO,
+    DEEPLX,
     ILLEGAL
 }
 
@@ -36,10 +38,15 @@ impl Configuration {
         (self.app_info.app_id.clone(), self.app_info.app_secret.clone())
     }
 
+    pub(crate) fn load_deeplx_token(&self) -> String {
+        self.app_info.deeplx_token.clone()
+    }
+
     pub(crate) fn get_api_version(&self) -> ApiVersion {
         match self.app_info.api_version.as_str() {
             "baidu" => ApiVersion::BAIDU,
             "momo" => ApiVersion::MOMO,
+            "deeplx" => ApiVersion::DEEPLX,
             _ => ApiVersion::ILLEGAL,
         }
     }
@@ -51,8 +58,8 @@ impl Configuration {
 
 impl AppInfo {
     fn to_str(self) -> String {
-        format!("\napp_info\n  - api_version: {}\n  - app_id: {}\n  - app_secret: {}\n  - token: {}\n",
-                self.api_version, self.app_id, self.app_secret, self.token)
+        format!("\napp_info\n  - api_version: {}\n  - app_id: {}\n  - app_secret: {}\n  - momo_token: {}\n  - deeplx_token: {}\n",
+                self.api_version, self.app_id, self.app_secret, self.momo_token, self.deeplx_token)
     }
 }
 

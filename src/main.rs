@@ -7,6 +7,7 @@ use crate::types::args::{Arg, Command};
 
 mod types;
 mod service;
+mod utils;
 
 fn main() {
     let args: Arg = Arg::from_args();

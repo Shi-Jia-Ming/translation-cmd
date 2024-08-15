@@ -1,12 +1,14 @@
 [app_info]
-api_version = "baidu"   # momo
+api_version = "deeplx"   # baidu | momo | deeplx
 
 # configuration for Baidu API
 app_id = "20240707002094051"
 app_secret = "GyyaMSEJaavanYgVc7rO"
 
 # configuration for Momo API
-token = "Bearer 90e127b89d02253997c70cd16e189b99b4a7e5dc80e3e13524d6b74a3021b984"
+momo_token = "Bearer 90e127b89d02253997c70cd16e189b99b4a7e5dc80e3e13524d6b74a3021b984"
+
+deeplx_token = "Bearer qpalzm102938!"
 
 [default]
 from = "en"
